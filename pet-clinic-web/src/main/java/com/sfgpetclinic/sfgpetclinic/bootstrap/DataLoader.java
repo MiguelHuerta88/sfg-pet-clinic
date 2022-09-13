@@ -1,10 +1,7 @@
 package com.sfgpetclinic.sfgpetclinic.bootstrap;
 
 import com.sfgpetclinic.sfgpetclinic.model.*;
-import com.sfgpetclinic.sfgpetclinic.services.OwnerService;
-import com.sfgpetclinic.sfgpetclinic.services.PetTypeService;
-import com.sfgpetclinic.sfgpetclinic.services.SpecialtyService;
-import com.sfgpetclinic.sfgpetclinic.services.VetService;
+import com.sfgpetclinic.sfgpetclinic.services.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -19,11 +16,14 @@ public class DataLoader implements CommandLineRunner {
 
     private final SpecialtyService specialtiesService;
 
-    public DataLoader(OwnerService ownerService, VetService vetService, PetTypeService petTypeService, SpecialtyService specialtiesService) {
+    private final VisitService visitService;
+
+    public DataLoader(OwnerService ownerService, VetService vetService, PetTypeService petTypeService, SpecialtyService specialtiesService, VisitService visitService) {
         this.ownerService = ownerService;
         this.vetService = vetService;
         this.petTypeService = petTypeService;
         this.specialtiesService = specialtiesService;
+        this.visitService = visitService;
     }
 
     @Override
@@ -77,6 +77,7 @@ public class DataLoader implements CommandLineRunner {
         owner2.setAddress("1140 E Merced Ave");
         owner2.setCity("West Covina");
         owner2.setTelephone("3234303644");
+
         Pet susiePet = new Pet();
         susiePet.setPetType(savedDog);
         susiePet.setOwner(owner2);
@@ -84,6 +85,12 @@ public class DataLoader implements CommandLineRunner {
         susiePet.setName("Chip");
         owner2.getPets().add(susiePet);
         ownerService.save(owner2);
+
+        Visit visit = new Visit();
+        visit.setPet(susiePet);
+        visit.setDate(LocalDate.now());
+        visit.setDescription("sneezy dog");
+        visitService.save(visit);
 
         Owner owner3 = new Owner();
         owner3.setFirstName("Erik");
