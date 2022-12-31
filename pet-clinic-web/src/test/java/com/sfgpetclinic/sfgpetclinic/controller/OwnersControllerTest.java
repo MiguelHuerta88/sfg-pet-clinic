@@ -65,7 +65,7 @@ class OwnersControllerTest {
         mockMvc.perform(get("/owners/find"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("notimplemented"));
-        
+
         verifyNoInteractions(ownerService);
     }
 }
